@@ -3,6 +3,7 @@ package main
 import (
 	"strconv"
 	"strings"
+	"time"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
@@ -11,6 +12,7 @@ import (
 type Config struct {
 	RfcommDevice  string
 	ThreadExitMsg string
+	PinNumber     int
 }
 
 func getConfig() (*Config, error) {
@@ -90,7 +92,13 @@ func main() {
 				continue
 			}
 
-			log.Info("received number: ", i)
+			go func() {
+				enablePin(config.PinNumber)
+				log.Info("sleep, msec: ", i)
+				time.Sleep(time.Duration(i) * time.Millisecond)
+				disablePin(config.PinNumber)
+			}()
+
 		}
 	}
 

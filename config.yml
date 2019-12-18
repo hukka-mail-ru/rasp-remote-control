@@ -1,2 +1,3 @@
 RfcommDevice: "/dev/rfcomm0"
 ThreadExitMsg: "exit"
+PinNumber: 21
