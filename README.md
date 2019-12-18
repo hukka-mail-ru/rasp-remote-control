@@ -9,13 +9,13 @@ This instuction was helpful: https://github.com/ole-vi/bluetooth-server
 apt-get install bluez-tools
 ```
 
-- Open terminal, edit this file
+Open terminal, edit this file
 
 ```
 sudo nano /etc/systemd/system/dbus-org.bluez.service
 ```
 
-- Add -C at the end of the ExecStart= line, to start the bluetooth daemon in 'compatibility' mode. Add ExecStartPost=/usr/bin/sdptool add SP immediately after that line, to add the SP Profile. The two lines should look like this:
+Add -C at the end of the ExecStart= line, to start the bluetooth daemon in 'compatibility' mode. Add ExecStartPost=/usr/bin/sdptool add SP immediately after that line, to add the SP Profile. The two lines should look like this:
 
 ```
 ExecStart=/usr/lib/bluetooth/bluetoothd -C
@@ -23,19 +23,19 @@ ExecStart=/usr/lib/bluetooth/bluetoothd -C
 ExecStartPost=/usr/bin/sdptool add SP
 ```
 
-- Reboot RPi
+Reboot RPi
 
 
 ## Step 2 - Start the RFCOMM server on RPi
 
-- Set RPi visible:
+Set RPi visible:
 
 ```
  bt-adapter --set Discoverable on
  bt-adapter --set  Pairable on  
 ```
 
-- Run the RFCOMM server on RPi (and set a big timeout to make the connection alive for a while):
+Run the RFCOMM server on RPi (and set a big timeout to make the connection alive for a while):
 
 ```
  sudo rfcomm watch hci0 -L 86400
@@ -46,14 +46,14 @@ NOTE:  Observed problem: can't connect to the server the second time without res
 
 ## Step 3 - Start the RPi pin-control Application
 
-- In another terminal listen the RFCOMM device for incoming data:
+In another terminal listen the RFCOMM device for incoming data:
 ```
  cat /dev/rfcomm0
 ```
 
-- Download the code from here: https://github.com/hukka-mail-ru/rasp-remote-control
+Download the code from here: https://github.com/hukka-mail-ru/rasp-remote-control
 
-- Compile and run the code:
+Compile and run the code:
 
 ```
 go get
