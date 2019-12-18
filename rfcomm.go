@@ -6,10 +6,10 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-func rfcomm(c1 chan []byte) {
+func rfcomm(c1 chan []byte, config *Config) {
 
 	for {
-		device := "/dev/rfcomm0"
+		device := config.RfcommDevice
 		var fd, numread int
 		var err error
 
@@ -17,7 +17,7 @@ func rfcomm(c1 chan []byte) {
 
 		if err != nil {
 			log.Error("Cant open ", device, ": ", err.Error(), "\n")
-			c1 <- []byte{01, 02, 03}
+			c1 <- ExitMsg
 			return
 		}
 
