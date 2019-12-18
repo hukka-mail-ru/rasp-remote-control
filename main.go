@@ -32,14 +32,20 @@ func getConfig() (*Config, error) {
 
 func main() {
 
+	log.SetReportCaller(true)
+	log.SetFormatter(&MyFormatter{
+		TimestampFormat: "2006-01-02 15:04:05Z07:00",
+		LogFormat:       "%time% [%lvl%]: %file% [%line%] - %msg%",
+	})
+	// config
 	config, err := getConfig()
 	if err != nil {
 		log.WithError(err).Fatal("Could not load config")
 		return
 	}
 
+	// Start Rfcomm
 	c1 := make(chan []byte)
-
 	go rfcomm(c1, config)
 
 	// MAIN LOOP
