@@ -3,7 +3,7 @@
 This instuction was helpful: https://github.com/ole-vi/bluetooth-server
 
 
-## Preparation. Setup the SPP (serial port profile)
+## Bluetooth preparation. Setup the SPP (serial port profile)
 
 ```
 apt-get install bluez-tools
@@ -26,7 +26,7 @@ ExecStartPost=/usr/bin/sdptool add SP
 Reboot RPi
 
 
-## Step 2 - Start the RFCOMM server on RPi
+## Step 2 - Start the Buetooth/RFCOMM server on RPi
 
 Set RPi visible:
 
