@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/hashicorp/mdns"
 )
@@ -22,17 +23,24 @@ func main() {
 
 	// Create the mDNS server, defer shutdown
 	server, _ := mdns.NewServer(&mdns.Config{Zone: service})
-	defer server.Shutdown()
 
-	// Make a channel for results and start listening
-	entriesCh := make(chan *mdns.ServiceEntry, 4)
-	go func() {
-		for entry := range entriesCh {
-			fmt.Printf("Got new entry: %v\n", entry)
-		}
-	}()
+	for i := 0; i < 50; i++ {
+		time.Sleep(1 * time.Second)
+		fmt.Printf("sleep: %d\n", i)
+	}
+	server.Shutdown()
 
-	// Start the lookup
-	mdns.Lookup("_foobar._tcp", entriesCh)
-	close(entriesCh)
+	/*
+
+		defer server.Shutdown()
+
+		// Make a channel for results and start listening
+
+		go func() {
+			for i := 0; i < 50; i++ {
+				time.Sleep(1 * time.Second)
+				fmt.Printf("sleep: %d\n", i)
+			}
+		}()
+	*/
 }
