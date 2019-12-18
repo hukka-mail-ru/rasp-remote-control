@@ -1,6 +1,9 @@
 package main
 
 import (
+	"strconv"
+	"strings"
+
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 )
@@ -30,6 +33,22 @@ func getConfig() (*Config, error) {
 	return &config, nil
 }
 
+func parseMsg(msg string) (int, error) {
+	//	log.Info("parsing: ", string(msg))
+
+	msg = strings.TrimFunc(msg, func(r rune) bool {
+		return r == '\n' || r == '\x00'
+	})
+
+	//	log.Info("trimmed string: ", string(msg))
+
+	var i int
+	var err error
+	i, err = strconv.Atoi(string(msg))
+
+	return i, err
+}
+
 func main() {
 
 	// logger
@@ -56,11 +75,22 @@ func main() {
 	for {
 		select {
 		case msg := <-c1:
-			log.Info("received", msg)
+			//log.Info("received string: ", string(msg))
 			if string(msg) == config.ThreadExitMsg {
 				log.Info("Exit.")
 				return
 			}
+
+			var i int
+			var err error
+			i, err = parseMsg(string(msg))
+
+			if err != nil {
+				log.Error(err)
+				continue
+			}
+
+			log.Info("received number: ", i)
 		}
 	}
 
