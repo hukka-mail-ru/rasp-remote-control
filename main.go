@@ -14,7 +14,7 @@ func getConfig() (*Config, error) {
 	v := viper.New()
 
 	v.SetConfigName("config")
-	v.AddConfigPath("config") // directory
+	v.AddConfigPath(".") // directory
 	var config Config
 
 	err := v.ReadInConfig()
