@@ -1,2 +1,2 @@
 RfcommDevice: "/dev/rfcomm0"
-ThreadExitMsg: "Exit"
+ThreadExitMsg: "exit"
