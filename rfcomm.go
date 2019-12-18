@@ -17,7 +17,7 @@ func rfcomm(c1 chan []byte, config *Config) {
 
 		if err != nil {
 			log.Error("Cant open ", device, ": ", err.Error(), "\n")
-			c1 <- ExitMsg
+			c1 <- []byte(config.ThreadExitMsg)
 			return
 		}
 

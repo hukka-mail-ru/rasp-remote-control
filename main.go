@@ -1,21 +1,20 @@
 package main
 
 import (
-	"bytes"
-
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 )
 
 type Config struct {
-	RfcommDevice string
+	RfcommDevice  string
+	ThreadExitMsg string
 }
 
 func getConfig() (*Config, error) {
 	v := viper.New()
 
-	v.SetConfigName("common")
-	v.AddConfigPath("config")
+	v.SetConfigName("config")
+	v.AddConfigPath("config") // directory
 	var config Config
 
 	err := v.ReadInConfig()
@@ -48,7 +47,7 @@ func main() {
 		select {
 		case msg := <-c1:
 			log.Info("received", msg)
-			if bytes.Compare(msg, ExitMsg) == 0 {
+			if string(msg) == config.ThreadExitMsg {
 				log.Info("Exit.")
 				return
 			}
