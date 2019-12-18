@@ -32,11 +32,14 @@ func getConfig() (*Config, error) {
 
 func main() {
 
+	// logger
 	log.SetReportCaller(true)
-	log.SetFormatter(&MyFormatter{
+	log.SetFormatter(&log.TextFormatter{
+		DisableColors:   false,
+		FullTimestamp:   true,
 		TimestampFormat: "2006-01-02 15:04:05Z07:00",
-		LogFormat:       "%time% [%lvl%]: %file% [%line%] - %msg%",
 	})
+
 	// config
 	config, err := getConfig()
 	if err != nil {
