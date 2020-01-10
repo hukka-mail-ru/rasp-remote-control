@@ -3,7 +3,8 @@
 This instuction was helpful: https://github.com/ole-vi/bluetooth-server
 
 
-## Bluetooth preparation. Setup the SPP (serial port profile)
+# Bluetooth preparation. 
+## Setup the SPP (serial port profile)
 
 ```
 apt-get install bluez-tools
@@ -64,5 +65,68 @@ go run rasp-remote-control
 - Connect to the RFCOMM server on RPi via Android app (Serial Bluetooth Terminal)
 - Send some data,
 - Disconnect
+
+# InfraRed supprot preparation
+
+## Install and configure LIRC 
+(Check this: https://github.com/mtraver/rpi-ir-remote)
+
+
+Install LIRC:
+```
+sudo aptitude install lirc
+```
+Add to /boot/config.txt:
+```
+dtoverlay=gpio-ir,gpio_pin=22
+dtoverlay=gpio-ir-tx,gpio_pin=23
+```
+
+Edit /etc/lirc/lirc_options.conf :  
+```
+[lircd]
+nodaemon        = False
+driver          = default
+device          = /dev/lirc0
+output          = /var/run/lirc/lircd
+pidfile         = /var/run/lirc/lircd.pid
+plugindir       = /usr/lib/arm-linux-gnueabihf/lirc/plugins
+permission      = 666
+allow-simulate  = No
+repeat-max      = 600
+
+[lircmd]
+uinput          = False
+nodaemon        = False
+```
+Reboot:
+```
+sudo reboot
+```
+Check the lirc daemon is running:
+```
+> ps aux | grep lirc                
+root       507  0.0  0.3   7152  2968 ?        Ss   13:39   0:00 /usr/sbin/lircd --nodaemon
+pi         949  0.0  0.0   4784   572 pts/0    S+   13:59   0:00 grep lirc
+```
+
+## Connect the IR receiver to RPi
+
+(see https://www.instructables.com/id/How-To-Useemulate-remotes-with-Arduino-and-Raspber/)
+
+The IR receiver has got 3 pins. Connect them to RPi pins, beginning with the left:
+- 1st (OUT) -> to GPIO 22
+- 2nd (GND) -> to GND pin
+- 3rd (VCC) -> to 5V pin
+
+## Test the IR receiver
+```
+cat /dev/lirc1
+```
+...and press any key on a IR remote control, pointed to the IR receiver.
+
+
+
+
 
 
