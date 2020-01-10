@@ -6,7 +6,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-func listenDevice(ch chan []byte, device string, exitMsg string) {
+func listen(ch chan []byte, device string, exitMsg string) {
 
 	log.Info("Listen ", device)
 

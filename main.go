@@ -73,11 +73,11 @@ func main() {
 
 	// Start Rfcomm
 	chRfcomm := make(chan []byte)
-	go listenDevice(chRfcomm, config.RfcommDevice, config.ThreadExitMsg)
+	go listen(chRfcomm, config.RfcommDevice, config.ThreadExitMsg)
 
 	// Start Lirc
 	chLirc := make(chan []byte)
-	go listenDevice(chLirc, config.LircDevice, config.ThreadExitMsg)
+	go listen(chLirc, config.LircDevice, config.ThreadExitMsg)
 
 	// MAIN LOOP
 	for {
