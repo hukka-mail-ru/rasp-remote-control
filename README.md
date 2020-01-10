@@ -3,7 +3,7 @@
 This instuction was helpful: https://github.com/ole-vi/bluetooth-server
 
 
-## Bluetooth preparation. 
+## Bluetooth communication
 ### Setup the SPP (serial port profile)
 
 ```
@@ -66,7 +66,8 @@ go run rasp-remote-control
 - Send some data,
 - Disconnect
 
-## InfraRed supprot preparation
+
+## InfraRed receiver 
 
 ### Install and configure LIRC 
 (Check this: https://github.com/mtraver/rpi-ir-remote)
@@ -114,7 +115,7 @@ pi         949  0.0  0.0   4784   572 pts/0    S+   13:59   0:00 grep lirc
 
 (see https://www.instructables.com/id/How-To-Useemulate-remotes-with-Arduino-and-Raspber/)
 
-The IR receiver has got 3 pins. Connect them to RPi pins, beginning with the left:
+The IR receiver has got 3 pins. Connect them to the RPi pins, beginning with the left:
 - 1st (OUT) -> to GPIO 22
 - 2nd (GND) -> to GND pin
 - 3rd (VCC) -> to 5V pin
