@@ -3,6 +3,7 @@ package main
 import (
 	"strconv"
 	"strings"
+
 	"time"
 
 	log "github.com/sirupsen/logrus"
@@ -10,6 +11,7 @@ import (
 )
 
 type Config struct {
+	LircDevice    string
 	RfcommDevice  string
 	ThreadExitMsg string
 	PinNumber     int
@@ -70,14 +72,18 @@ func main() {
 	}
 
 	// Start Rfcomm
-	c1 := make(chan []byte)
-	go rfcomm(c1, config)
+	chRfcomm := make(chan []byte)
+	go listenDevice(chRfcomm, config.RfcommDevice, config.ThreadExitMsg)
+
+	// Start Lirc
+	chLirc := make(chan []byte)
+	go listenDevice(chLirc, config.LircDevice, config.ThreadExitMsg)
 
 	// MAIN LOOP
 	for {
 		select {
-		case msg := <-c1:
-			//log.Info("received string: ", string(msg))
+		case msg := <-chRfcomm:
+			log.Info("From chRfcomm: ", string(msg))
 			if string(msg) == config.ThreadExitMsg {
 				log.Info("Exit.")
 				return
@@ -99,6 +105,14 @@ func main() {
 				disablePin(config.PinNumber)
 			}()
 
+		case msg := <-chLirc:
+			log.Info("From LIRC: ", string(msg))
+			if string(msg) == config.ThreadExitMsg {
+				log.Info("Exit.")
+				return
+			}
+
+			continue
 		}
 	}
 

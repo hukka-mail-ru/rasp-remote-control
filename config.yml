@@ -1,3 +1,4 @@
 RfcommDevice: "/dev/rfcomm0"
+LircDevice: "/dev/lirc1"
 ThreadExitMsg: "exit"
 PinNumber: 21

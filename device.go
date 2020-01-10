@@ -6,12 +6,11 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-func rfcomm(c1 chan []byte, config *Config) {
+func listenDevice(ch chan []byte, device string, exitMsg string) {
 
-	log.Info("Rfcomm started")
+	log.Info("Listen ", device)
 
 	for {
-		device := config.RfcommDevice
 		var fd, numread int
 		var err error
 
@@ -19,7 +18,7 @@ func rfcomm(c1 chan []byte, config *Config) {
 
 		if err != nil {
 			log.Error("Cant open ", device, ": ", err.Error())
-			c1 <- []byte(config.ThreadExitMsg)
+			ch <- []byte(exitMsg)
 			return
 		}
 
@@ -27,14 +26,16 @@ func rfcomm(c1 chan []byte, config *Config) {
 
 		numread, err = syscall.Read(fd, buffer)
 
-		if err != nil {
+		/*if err != nil {
 			log.Error(err.Error(), "\n")
+		}*/
+
+		if numread > 0 {
+			log.Info("Numbytes read:", numread)
+			log.Info("Buffer:", buffer)
+
+			ch <- buffer
 		}
-
-		log.Info("Numbytes read:", numread)
-		log.Info("Buffer:", buffer)
-
-		c1 <- buffer
 
 		err = syscall.Close(fd)
 
