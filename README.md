@@ -115,7 +115,7 @@ root       507  0.0  0.3   7152  2968 ?        Ss   13:39   0:00 /usr/sbin/lircd
 pi         949  0.0  0.0   4784   572 pts/0    S+   13:59   0:00 grep lirc
 ```
 
-### Connect the IR receiver to RPi
+### Connect the IR receiver to RPi (Hardware) 
 
 (see https://www.instructables.com/id/How-To-Useemulate-remotes-with-Arduino-and-Raspber/)
 
