@@ -70,12 +70,16 @@ go run rasp-remote-control
 ## InfraRed receiver 
 
 ### Install and configure LIRC 
-(Check this: https://github.com/mtraver/rpi-ir-remote)
-
+https://www.raspberrypi.org/forums/viewtopic.php?t=235256
+https://github.com/mtraver/rpi-ir-remote)
 
 Install LIRC:
 ```
 sudo aptitude install lirc
+```
+Check the kernel version, must be 4.19. If not, use the link above.
+```
+uname -a
 ```
 Add to /boot/config.txt:
 ```
