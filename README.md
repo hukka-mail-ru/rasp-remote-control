@@ -126,6 +126,10 @@ The IR receiver has got 3 pins. Connect them to the RPi pins, beginning with the
 
 ### Test the IR receiver
 ```
+sudo mode2 --driver default --device /dev/lirc1
+```
+or
+```
 cat /dev/lirc1
 ```
 ...and press any key on a IR remote control, pointed to the IR receiver.
