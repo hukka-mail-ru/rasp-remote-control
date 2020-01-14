@@ -6,19 +6,14 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-func listen(ch chan []byte, device string, exitMsg string) {
+func listen(ch chan []byte, device string, config *Config) {
 
 	log.Info("Listen ", device)
-
-	var fd, numread int
-	var err error
-
-	//fd, err = syscall.Open(device, syscall.O_RDONLY, 0)
-	fd, err = syscall.Open(device, syscall.O_RDONLY, 0)
+	fd, err := syscall.Open(device, syscall.O_RDONLY, 0)
 
 	if err != nil {
 		log.Error("Can't open ", device, ": ", err.Error())
-		ch <- []byte(exitMsg)
+		ch <- []byte(config.ThreadExitMsg)
 		return
 	}
 
@@ -26,9 +21,8 @@ func listen(ch chan []byte, device string, exitMsg string) {
 
 	for {
 
-		buffer := make([]byte, 1000, 1000)
-
-		numread, err = syscall.Read(fd, buffer)
+		buffer := make([]byte, config.DeviceReadBufferSize, config.DeviceReadBufferSize)
+		numread, err := syscall.Read(fd, buffer)
 
 		if err != nil {
 			log.Error("Can't read ", device, ": ", err.Error())
@@ -41,8 +35,7 @@ func listen(ch chan []byte, device string, exitMsg string) {
 
 			ch <- buffer
 		}
-
 	}
 
-	ch <- []byte(exitMsg)
+	ch <- []byte(config.ThreadExitMsg)
 }

@@ -11,10 +11,11 @@ import (
 )
 
 type Config struct {
-	LircDevice    string
-	RfcommDevice  string
-	ThreadExitMsg string
-	PinNumber     int
+	LircDevice           string
+	RfcommDevice         string
+	DeviceReadBufferSize int
+	ThreadExitMsg        string
+	PinNumber            int
 }
 
 func getConfig() (*Config, error) {
@@ -73,11 +74,11 @@ func main() {
 
 	// Start Rfcomm
 	chRfcomm := make(chan []byte)
-	go listen(chRfcomm, config.RfcommDevice, config.ThreadExitMsg)
+	go listen(chRfcomm, config.RfcommDevice, config)
 
 	// Start Lirc
 	chLirc := make(chan []byte)
-	go listen(chLirc, config.LircDevice, config.ThreadExitMsg)
+	go listen(chLirc, config.LircDevice, config)
 
 	// MAIN LOOP
 	for {

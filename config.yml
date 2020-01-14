@@ -1,4 +1,5 @@
 RfcommDevice: "/dev/rfcomm0"
 LircDevice: "/dev/lirc1"
+DeviceReadBufferSize: 1000
 ThreadExitMsg: "exit"
 PinNumber: 21
