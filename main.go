@@ -4,6 +4,8 @@ import (
 	"strconv"
 	"strings"
 
+	"encoding/binary"
+	"fmt"
 	"time"
 
 	log "github.com/sirupsen/logrus"
@@ -52,6 +54,21 @@ func parseMsg(msg string) (int, error) {
 	i, err = strconv.Atoi(string(msg))
 
 	return i, err
+}
+
+func convertToArrayOfUint32(bytes []byte) []uint32 {
+
+	var array []uint32
+
+	for i := 0; i < len(bytes)-4; i += 4 {
+
+		res := binary.LittleEndian.Uint32(bytes[i : i+4])
+		fmt.Printf("Uint32: %08x\n", res)
+
+		array = append(array, res)
+	}
+
+	return array
 }
 
 func main() {
@@ -107,11 +124,15 @@ func main() {
 			}()
 
 		case msg := <-chLirc:
-			log.Info("From LIRC: ", string(msg))
+			log.Info("From LIRC: ", msg, string(msg))
+
 			if string(msg) == config.ThreadExitMsg {
 				log.Info("Exit.")
 				return
 			}
+
+			arr := convertToArrayOfUint32(msg)
+			log.Info("Arr:", arr)
 
 			continue
 		}

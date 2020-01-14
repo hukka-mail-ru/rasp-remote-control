@@ -30,10 +30,12 @@ func listen(ch chan []byte, device string, config *Config) {
 		}
 
 		if numread > 0 {
-			log.Info("Numbytes read:", numread)
-			log.Info("Buffer:", buffer)
+			//	log.Info("Numbytes read:", numread)
 
-			ch <- buffer
+			readBytes := make([]byte, numread)
+			copy(readBytes, buffer)
+
+			ch <- readBytes
 		}
 	}
 
