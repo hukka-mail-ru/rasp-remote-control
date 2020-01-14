@@ -126,11 +126,13 @@ The IR receiver has got 3 pins. Connect them to the RPi pins, beginning with the
 
 ### Test the IR receiver
 ```
+sudo mode2 --driver default --device /dev/lirc1
+```
+or
+```
 cat /dev/lirc1
 ```
-...and press any key on a IR remote control, pointed to the IR receiver.
-
-
+...and press any key on a IR remote control, pointed to the IR receiver. You should see a sequence of pulses and spaces. The carrier parameters (frequency, duty cycle) and the intervals for PULSE and SPACE events depend on the protocol. For example, the NEC protocol uses a carrier of 38kHz, and transmissions start with a 9ms PULSE and a 4.5ms SPACE. It then transmits 16 bits of scan code, being 8 bits for address (usually it is a fixed number for a given remote controller), followed by 8 bits of code. A bit “1” is modulated with 560µs PULSE followed by 1690µs SPACE and a bit “0” is modulated with 560µs PULSE followed by 560µs SPACE.
 
 
 
