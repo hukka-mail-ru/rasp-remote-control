@@ -1,19 +1,20 @@
-package main
+package rpi
 
 import (
+	"rasp-remote-control/config"
 	"syscall"
 
 	log "github.com/sirupsen/logrus"
 )
 
-func listen(ch chan []byte, device string, config *Config) {
+func Listen(ch chan []byte, device string) {
 
 	log.Info("Listen ", device)
 	fd, err := syscall.Open(device, syscall.O_RDONLY, 0)
 
 	if err != nil {
 		log.Error("Can't open ", device, ": ", err.Error())
-		ch <- []byte(config.ThreadExitMsg)
+		ch <- []byte(config.Inst().ThreadExitMsg)
 		return
 	}
 
@@ -21,7 +22,7 @@ func listen(ch chan []byte, device string, config *Config) {
 
 	for {
 
-		buffer := make([]byte, config.DeviceReadBufferSize, config.DeviceReadBufferSize)
+		buffer := make([]byte, config.Inst().DeviceReadBufferSize, config.Inst().DeviceReadBufferSize)
 		numread, err := syscall.Read(fd, buffer)
 
 		if err != nil {
@@ -39,5 +40,5 @@ func listen(ch chan []byte, device string, config *Config) {
 		}
 	}
 
-	ch <- []byte(config.ThreadExitMsg)
+	ch <- []byte(config.Inst().ThreadExitMsg)
 }

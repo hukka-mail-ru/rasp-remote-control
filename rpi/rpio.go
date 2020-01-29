@@ -1,11 +1,11 @@
-package main
+package rpi
 
 import (
 	log "github.com/sirupsen/logrus"
 	"github.com/stianeikeland/go-rpio"
 )
 
-func enablePin(pinNumber int) {
+func EnablePin(pinNumber int) {
 	log.Info("Enable pin ", pinNumber)
 	rpio.Open()
 	defer rpio.Close()
@@ -15,7 +15,7 @@ func enablePin(pinNumber int) {
 	pin.High()
 }
 
-func disablePin(pinNumber int) {
+func DisablePin(pinNumber int) {
 	rpio.Open()
 	defer rpio.Close()
 
